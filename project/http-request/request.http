@@ -1,0 +1,17 @@
+### Create Lemon as a new fruit
+
+POST http://localhost:8080/api/
+Content-Type: application/json
+
+{
+  "name": "Lemon",
+  "season": "Summer"
+}
+
+### Get all fruits
+
+GET http://localhost:8080/api/
+
+### Get all fruits with season summer
+
+GET http://localhost:8080/api/?season=Summer
