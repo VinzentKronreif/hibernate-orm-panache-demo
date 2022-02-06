@@ -9,7 +9,7 @@ import javax.persistence.Id;
 public class Fruit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    public Long id;
 
     public String name;
 

@@ -4,11 +4,10 @@ import at.htl.entity.Fruit;
 import at.htl.repository.FruitRepository;
 
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.transaction.Transactional;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/api")
@@ -19,13 +18,20 @@ public class FruitResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Fruit> getFruits() {
+    public List<Fruit> getFruits(@QueryParam("season") String season) {
+        if (season != null) {
+            return fruitRepository.findBySeason(season);
+        }
         return fruitRepository.listAll();
     }
 
-    @GET
+    @Transactional
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Fruit> getFruitsBySeason(@QueryParam("season") String season) {
-        return fruitRepository.findBySeason(season);
+    public Response newFruit(Fruit fruit) {
+        fruit.id = null;
+        fruitRepository.persist(fruit);
+        return Response.status(Response.Status.CREATED).entity(fruit).build();
     }
 }
