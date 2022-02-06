@@ -10,27 +10,47 @@ ifndef::backend[:backend: html5]
 :revealjs_parallaxBackgroundSize: cover
 :revealjs_parallaxBackgroundImage: images/background.jpg
 
-== First Slide
+== Was ist Hibernate ORM / Panache?
+* ORM = Object-relational mapping
+** Ist dazu da, Java Objekte in eine relationale Datenbank speichern zu können
+* Hibernate ORM ist die am meisten verbreitetste JPA Implementierung
+* Erlaubt detailliert konfigurierbares und komplexes OR-Mapping
+* Allerdings nicht wirklich einfach und trivial bei Standardfällen
 
-* aaa
-* bbb
-* ccc [red]#red text#
+* Panache hilft dabei, Entities und Zugriffe einfach und möglichst ohne Boilerplate-Code zu erstellen
 
-=== Second Slide
+=== Unterschied mit und ohne Panache
+Ohne Panache:
 
-[plantuml,cld,png]
-----
-@startuml
-class Person {
-brand: String
-type: String
-}
-@enduml
-----
+* Felder sind private
+* generierte Getter/Setter blasen den Code unnötig auf
+* Methoden für Standard-Zugriffe werden immer wieder neu implementiert (zB Count)
 
-== Third Slide
+Panache:
 
-image:https://images.pexels.com/photos/3966425/pexels-photo-3966425.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940[VW]
+* Felder public -> keine Getter/Setter
+* Panache kann je nach Pattern über vordefinierte Methoden häufige Anwendungsfälle
+abdecken (z.B. count, find, list, ...). Entweder über ein Repository (DAO-Pattern)
+oder über das Entity selber (Active Record-Pattern) kann man auf diese Methoden zugreifen.
+
+
+== Active Record Pattern
+
+Die Objekte enthalten Daten(Fields) und Verhalten(Logik/Methoden)
+
+=== Umsetzung
+
+image::/images/PanacheEntity.png[]
+
+IMPORTANT: PanacheEntity vergibt eine Id, sonst PanacheEntityBase benutzen um
+eigene Id zu vergeben.
+
+* Getter/Setter nicht nötig, können aber für Validierungen trotzdem erstellt werden
+* @Transient benutzen, um Felder nicht zu persistieren
+
+=== Anwendung
+
+
 
 == Fourth Slide
 
