@@ -1,0 +1,88 @@
+= Hibernate ORM with Panache
+Kronreif Vinzent
+1.0, 2022-02-03
+ifndef::sourcedir[:sourcedir: ../src/main/java]
+ifndef::imagesdir[:imagesdir: images]
+ifndef::backend[:backend: html5]
+:icons: font
+:imagesdir: images
+:customcss: css/presentation.css
+:revealjs_parallaxBackgroundSize: contain
+:revealjs_parallaxBackgroundImage: images/hibernate.png
+
+== Was ist Hibernate ORM
+* ORM = Object-relational mapping
+** Speichert Java Objekte in eine relationale Datenbank
+
+=== Hibernate ORM
+* Am meisten verbreitetste JPA Implementierung
+* Erlaubt detailliertes konfigurierbares und komplexes OR-Mapping
+* Nicht wirklich einfach und trivial bei Standardfällen
+
+=== Panache
+
+Panache ist da, um Entities und Zugriffe ohne Boilerplate-Code zu erstellen
+
+== Unterschied mit und ohne Panache
+=== Ohne Panache:
+
+* Felder sind private
+* generierte Getter/Setter blasen Code auf
+* Standard-Zugriffe werden immer wieder neu implementiert
+
+=== Mit Panache:
+
+* Felder public -> keine Getter/Setter
+* Je nach Pattern über vordefinierte Methoden häufige Anwendungsfälle
+abdecken (z.B. count, find, list, etc.)
+
+== Patterns
+* Repository (DAO-Pattern)
+* Entity (Active Record-Pattern)
+
+=== Active Record Pattern
+
+Objekte(Entities) enthalten Daten(Fields) und Verhalten(Logik/Methoden)
+
+=== Umsetzung
+
+image::PanacheEntity.png[,400]
+
+* PanacheEntity vergibt Id, sonst PanacheEntityBase benutzen
+* Getter/Setter nicht nötig
+* @Transient benutzen, um Felder nicht zu persistieren
+
+=== DAO-Pattern (Repository)
+
+Entities erhalten Id über JPA-Annotation, Repositories enthalten
+Logik(vorimplementiere Methoden)
+
+=== Umsetzung
+
+image::PanacheRepository.png[]
+
+PanacheRepository<Entity> implementieren & @ApplicationScoped annotieren.
+
+Eigene Methoden werden als Instanzmethoden implementiert.
+
+=== Umsetzung
+
+Um das Repository zu nutzen -> Injecten mit @Inject
+
+== Anwendung mit REST
+
+Anwendung mit REST und DAO-Pattern(Repository)
+
+=== Injecten
+
+image::InjectRepo.png[]
+
+=== Simple Post
+
+image::Post.png[]
+
+=== Simple Get
+
+image::Get.png[]
+
+
