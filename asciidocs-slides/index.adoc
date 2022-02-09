@@ -7,51 +7,82 @@ ifndef::backend[:backend: html5]
 :icons: font
 :imagesdir: images
 :customcss: css/presentation.css
-:revealjs_parallaxBackgroundSize: cover
-:revealjs_parallaxBackgroundImage: images/background.jpg
+:revealjs_parallaxBackgroundSize: contain
+:revealjs_parallaxBackgroundImage: images/hibernate.png
 
-== Was ist Hibernate ORM / Panache?
+== Was ist Hibernate ORM
 * ORM = Object-relational mapping
-** Ist dazu da, Java Objekte in eine relationale Datenbank speichern zu können
-* Hibernate ORM ist die am meisten verbreitetste JPA Implementierung
-* Erlaubt detailliert konfigurierbares und komplexes OR-Mapping
-* Allerdings nicht wirklich einfach und trivial bei Standardfällen
+** Speichert Java Objekte in eine relationale Datenbank
 
-* Panache hilft dabei, Entities und Zugriffe einfach und möglichst ohne Boilerplate-Code zu erstellen
+=== Hibernate ORM
+* Am meisten verbreitetste JPA Implementierung
+* Erlaubt detailliertes konfigurierbares und komplexes OR-Mapping
+* Nicht wirklich einfach und trivial bei Standardfällen
 
-=== Unterschied mit und ohne Panache
-Ohne Panache:
+=== Panache
+
+Panache ist da, um Entities und Zugriffe ohne Boilerplate-Code zu erstellen
+
+== Unterschied mit und ohne Panache
+=== Ohne Panache:
 
 * Felder sind private
-* generierte Getter/Setter blasen den Code unnötig auf
-* Methoden für Standard-Zugriffe werden immer wieder neu implementiert (zB Count)
+* generierte Getter/Setter blasen Code auf
+* Standard-Zugriffe werden immer wieder neu implementiert
 
-Panache:
+=== Mit Panache:
 
 * Felder public -> keine Getter/Setter
-* Panache kann je nach Pattern über vordefinierte Methoden häufige Anwendungsfälle
-abdecken (z.B. count, find, list, ...). Entweder über ein Repository (DAO-Pattern)
-oder über das Entity selber (Active Record-Pattern) kann man auf diese Methoden zugreifen.
+* Je nach Pattern über vordefinierte Methoden häufige Anwendungsfälle
+abdecken (z.B. count, find, list, etc.)
 
+== Patterns
+* Repository (DAO-Pattern)
+* Entity (Active Record-Pattern)
 
-== Active Record Pattern
+=== Active Record Pattern
 
-Die Objekte enthalten Daten(Fields) und Verhalten(Logik/Methoden)
+Objekte(Entities) enthalten Daten(Fields) und Verhalten(Logik/Methoden)
 
 === Umsetzung
 
-image::/images/PanacheEntity.png[]
+image::PanacheEntity.png[,400]
 
-IMPORTANT: PanacheEntity vergibt eine Id, sonst PanacheEntityBase benutzen um
-eigene Id zu vergeben.
-
-* Getter/Setter nicht nötig, können aber für Validierungen trotzdem erstellt werden
+* PanacheEntity vergibt Id, sonst PanacheEntityBase benutzen
+* Getter/Setter nicht nötig
 * @Transient benutzen, um Felder nicht zu persistieren
 
-=== Anwendung
+=== DAO-Pattern (Repository)
+
+Entities erhalten Id über JPA-Annotation, Repositories enthalten
+Logik(vorimplementiere Methoden)
+
+=== Umsetzung
+
+image::PanacheRepository.png[]
+
+PanacheRepository<Entity> implementieren & @ApplicationScoped annotieren.
+
+Eigene Methoden werden als Instanzmethoden implementiert.
+
+=== Umsetzung
+
+Um das Repository zu nutzen -> Injecten mit @Inject
+
+== Anwendung mit REST
+
+Anwendung mit REST und DAO-Pattern(Repository)
+
+=== Injecten
+
+image::InjectRepo.png[]
+
+=== Simple Post
+
+image::Post.png[]
+
+=== Simple Get
+
+image::Get.png[]
 
 
-
-== Fourth Slide
-
-IMPORTANT: Something very important
